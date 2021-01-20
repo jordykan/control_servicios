@@ -14,7 +14,7 @@ export default {
     },
     query: async (req,res,next) =>{
         try{
-            const reg = await models.Agency.findOne({_id:req.query._id});
+            const reg = await models.Agency.findOne({_id:req.query._id})
             res.status(200).json(reg)
         }catch(e){
             res.status(500).send({
@@ -31,17 +31,50 @@ export default {
             res.status(500).send({
                 message:'Ocurrio un error'
             })
+            next(e);
         }
-        next(e);
+       
     },
     update: async (req,res,next) =>{
         try{
-           
+            const reg = await models.Agency.findByIdAndUpdate({_id:req.body._id},{
+                name:req.body.name,
+                address:req.body.address,
+                legal_representative:req.body.legal_representative,
+                rfc:req.body.rfc,
+                email:req.body.email,
+            })
+            res.status(200).json(reg);
         }catch(e){
             res.status(500).send({
                 message:'Ocurrio un error'
             })
+            next(e)
         }
-        next(e)
-    }
+      
+    },
+
+    activate: async(req,res,next)=>{
+        try{
+            const reg = await models.Agency.findByIdAndUpdate({_id:req.body._id},{status:0});
+            res.status(200).json(reg)
+
+        }catch(e){
+            res.status(500).send({
+                messaje:'Ocurrio un error'
+            });
+            next(e);
+        }
+    },
+    deactivate: async(req,res,next)=>{
+        try{
+            const reg = await models.Agency.findByIdAndUpdate({_id:req.body._id},{status:1});
+            res.status(200).json(reg)
+        }catch(e){
+            res.status(500).send({
+                messaje:'Ocurrio un error'
+            });
+            next(e);
+        }
+    },
 }

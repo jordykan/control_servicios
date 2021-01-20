@@ -55,33 +55,37 @@ export default {
                 eslora:req.body.eslora,
                 puntal:req.body.puntal,
             })
+            res.status(200).json(reg);
         }catch(e){
             res.status(500).send({
                 message:'error'
             })
+            next(e)
         }
-        next(e)
+        
 
     },
-    activate: async (req,res,next) =>{
+    activate: async(req,res,next)=>{
         try{
+            const reg = await models.Boat.findByIdAndUpdate({_id:req.body._id},{status:0});
+            res.status(200).json(reg)
 
         }catch(e){
             res.status(500).send({
-                message:'Ocurrio un error'
-            })
+                messaje:'Ocurrio un error'
+            });
+            next(e);
         }
-        next(e)
     },
-    deactivate: async (req,res,next) =>{
+    deactivate: async(req,res,next)=>{
         try{
-            
+            const reg = await models.Boat.findByIdAndUpdate({_id:req.body._id},{status:1});
+            res.status(200).json(reg)
         }catch(e){
             res.status(500).send({
-                message:'Ocurrio un error',
-            })
+                messaje:'Ocurrio un error'
+            });
+            next(e);
         }
-        next(e)
-
-    }
+    },
 }
